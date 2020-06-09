@@ -1,14 +1,10 @@
 package io.sskuratov.sodiumconsumptioncalc;
 
-import io.sskuratov.sodiumconsumptioncalc.commands.Command;
-import io.sskuratov.sodiumconsumptioncalc.commands.DefaultCommand;
-import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
-import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
+import io.sskuratov.sodiumconsumptioncalc.commands.*;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
-import io.sskuratov.sodiumconsumptioncalc.dao.UserRepository;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
 import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachine;
 import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachinePersist;
+import io.sskuratov.sodiumconsumptioncalc.state.States;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,8 +20,8 @@ import java.util.Optional;
 @Component
 public class CalcBot extends TelegramLongPollingBot {
 
-    private UserService userService;
-    private CalcStateMachinePersist persist = new CalcStateMachinePersist();
+    private final UserService userService;
+    private final CalcStateMachinePersist persist = new CalcStateMachinePersist();
 
     @Autowired
     public CalcBot(UserService userService) {
@@ -44,10 +40,11 @@ public class CalcBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<CalcStateMachine> stateMachine = null;
+        Optional<CalcStateMachine> stateMachine = Optional.empty();
 
         try {
             if (update.hasMessage()) {
+
                 Message message = update.getMessage();
                 if (message != null && message.hasText()) {
                     User user = userService.getUserOrCreateNew(message);
@@ -55,22 +52,26 @@ public class CalcBot extends TelegramLongPollingBot {
                     stateMachine = Optional.of(new CalcStateMachine(user, persist, this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
-                        "/c".equalsIgnoreCase(message.getText()) ||
-                        "/с".equalsIgnoreCase(message.getText())) {
+                        "/start".equalsIgnoreCase(message.getText()) ||
+                        "/с".equalsIgnoreCase(message.getText()) ||
+                        "/s".equalsIgnoreCase(message.getText())) {
                         command = new StartCommand(this);
                         stateMachine.get().reset();
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
+                               "/help".equalsIgnoreCase(message.getText()) ||
                                "/п".equalsIgnoreCase(message.getText()) ||
                                "/h".equalsIgnoreCase(message.getText())) {
                         command = new HelpCommand(this);
+                    } else if ("/1".equalsIgnoreCase(message.getText())) {
+                        stateMachine.get().reset();
+                        command = new InitCommand(this);
                     } else {
                         command = stateMachine.get().perform(message.getText());
                     }
 
                     command.execute(message);
-
                     userService.save(user);
-                    if (stateMachine.get().getLastState() == CalcState.INIT) {
+                    if (stateMachine.get().getLastState().getId() == States.INIT) {
                         stateMachine.get().reset();
                     }
                 }

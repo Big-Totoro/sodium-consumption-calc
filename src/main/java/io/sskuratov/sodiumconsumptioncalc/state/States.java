@@ -1,0 +1,14 @@
+package io.sskuratov.sodiumconsumptioncalc.state;
+
+public enum States {
+    INIT,
+    URINE_CREATININE_CONCENTRATION,
+    URINE_CREATININE_CONCENTRATION_UNITS,
+    URINE_SODIUM_CONCENTRATION,
+    URINE_POTASSIUM_CONCENTRATION,
+    SEX,
+    AGE,
+    HEIGHT,
+    WEIGHT,
+    COMPLETED
+}

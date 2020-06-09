@@ -5,11 +5,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class UrineSodiumConcentrationCommand implements Command {
+public class CreatinineConcentrationUnitsCommand implements Command {
 
     private final CalcBot calcBot;
 
-    public UrineSodiumConcentrationCommand(CalcBot calcBot) {
+    public CreatinineConcentrationUnitsCommand(CalcBot calcBot) {
         this.calcBot = calcBot;
     }
 
@@ -19,9 +19,9 @@ public class UrineSodiumConcentrationCommand implements Command {
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(
-                "Шаг 3 из 7: Далее, введите параметр: \"" +
-                        "Концентрация натрия в разовой порции мочи (ммоль/л)" +
-                        "\"");
+                "Шаг 2 из 7: Далее, введите параметр: \"" +
+                        "Концентрация креатинина в разовой порции мочи" +
+                "\"");
 
         calcBot.execute(sendMessage);
     }

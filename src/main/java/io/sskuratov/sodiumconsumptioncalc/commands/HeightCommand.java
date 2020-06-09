@@ -1,7 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -21,7 +20,7 @@ public class HeightCommand implements Command {
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(
                 "Шаг 7 из 7: Далее, введите параметр: \"" +
-                        CalcState.WEIGHT.getEntity().getCaption() +
+                        "Вес (кг)" +
                         "\"");
 
         calcBot.execute(sendMessage);

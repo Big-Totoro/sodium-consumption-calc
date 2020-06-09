@@ -3,44 +3,44 @@ package io.sskuratov.sodiumconsumptioncalc.state;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class CalcStateMachinePersist {
 
-    private final Map<Integer, List<CalcState>> store;
+    private final Map<Integer, List<State<?>>> store;
 
     public CalcStateMachinePersist() {
-        store = new HashMap<>();
+        store = new ConcurrentHashMap<>();
     }
 
     public void reset(User user) {
         store.computeIfPresent(user.getUserId(), (k, v) -> {
             v.clear();
-            v.add(CalcState.INIT);
+            v.add(new InitState());
             return v;
         });
     }
 
-    public CalcState getLastState(User user) {
+    public State<?> getLastState(User user) {
         store.computeIfAbsent(user.getUserId(), (k) -> {
-            List<CalcState> state = new ArrayList<>();
-            state.add(CalcState.INIT);
+            List<State<?>> state = new CopyOnWriteArrayList<>();
+            state.add(new InitState());
             return state;
         });
-        List<CalcState> states = store.get(user.getUserId());
+        List<State<?>> states = store.get(user.getUserId());
 
         return states.get(states.size() - 1);
     }
 
-    public void appendState(User user, CalcState state) {
+    public void appendState(User user, State<?> state) {
         store.get(user.getUserId()).add(state);
     }
 
-    public List<CalcState> getStates(User user) {
+    public List<State<?>> getStates(User user) {
         return store.get(user.getUserId());
     }
 }
