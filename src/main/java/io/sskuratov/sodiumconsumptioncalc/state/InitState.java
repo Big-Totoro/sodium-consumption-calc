@@ -1,5 +1,7 @@
 package io.sskuratov.sodiumconsumptioncalc.state;
 
+import io.sskuratov.sodiumconsumptioncalc.statemachine.States;
+
 import java.util.Optional;
 
 public class InitState implements State<String> {

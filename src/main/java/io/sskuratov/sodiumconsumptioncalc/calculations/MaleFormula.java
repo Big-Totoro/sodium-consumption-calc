@@ -1,6 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.calculations;
 
-import io.sskuratov.sodiumconsumptioncalc.state.States;
+import io.sskuratov.sodiumconsumptioncalc.statemachine.States;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

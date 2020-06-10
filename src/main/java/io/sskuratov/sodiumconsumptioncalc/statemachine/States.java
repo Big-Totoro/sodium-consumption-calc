@@ -1,6 +1,8 @@
-package io.sskuratov.sodiumconsumptioncalc.state;
+package io.sskuratov.sodiumconsumptioncalc.statemachine;
 
 public enum States {
+    START,
+    HELP,
     INIT,
     URINE_CREATININE_CONCENTRATION,
     URINE_CREATININE_CONCENTRATION_UNITS,

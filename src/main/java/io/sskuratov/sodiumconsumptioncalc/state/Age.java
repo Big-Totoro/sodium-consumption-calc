@@ -2,6 +2,7 @@ package io.sskuratov.sodiumconsumptioncalc.state;
 
 import io.sskuratov.sodiumconsumptioncalc.constraints.Constraint;
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
+import io.sskuratov.sodiumconsumptioncalc.statemachine.States;
 
 import java.math.BigDecimal;
 import java.util.Optional;
