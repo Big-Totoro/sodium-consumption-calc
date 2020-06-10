@@ -2,14 +2,14 @@ package io.sskuratov.sodiumconsumptioncalc;
 
 import io.sskuratov.sodiumconsumptioncalc.commands.Command;
 import io.sskuratov.sodiumconsumptioncalc.commands.DefaultCommand;
-import io.sskuratov.sodiumconsumptioncalc.commands.InitCommand;
+import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
+import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
-import io.sskuratov.sodiumconsumptioncalc.statemachine.Events;
-import io.sskuratov.sodiumconsumptioncalc.statemachine.States;
+import io.sskuratov.sodiumconsumptioncalc.dao.UserRepository;
+import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
+import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachine;
+import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachinePersist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.config.StateMachineFactory;
-import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -19,22 +19,17 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Component
 public class CalcBot extends TelegramLongPollingBot {
 
-    private final UserService userService;
-    private final StateMachineFactory<States, Events> stateMachineFactory;
-    private StateMachinePersister<States, Events, Integer> persister;
+    private UserService userService;
+    private CalcStateMachinePersist persist = new CalcStateMachinePersist();
 
     @Autowired
-    public CalcBot(
-            UserService userService,
-            StateMachineFactory<States, Events> stateMachineFactory,
-            StateMachinePersister<States, Events, Integer> persister) {
+    public CalcBot(UserService userService) {
         this.userService = userService;
-        this.stateMachineFactory = stateMachineFactory;
-        this.persister = persister;
     }
 
     @PostConstruct
@@ -49,47 +44,39 @@ public class CalcBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        final StateMachine<States, Events> stateMachine;
+        Optional<CalcStateMachine> stateMachine = null;
 
         try {
             if (update.hasMessage()) {
-
                 Message message = update.getMessage();
                 if (message != null && message.hasText()) {
                     User user = userService.getUserOrCreateNew(message);
                     Command command = new DefaultCommand(this);
-                    stateMachine = stateMachineFactory.getStateMachine();
-                    persister.restore(stateMachine, user.getUserId());
-
-                    stateMachine.getExtendedState().getVariables().put("MESSAGE", message);
-                    stateMachine.getExtendedState().getVariables().put("BOT", this);
+                    stateMachine = Optional.of(new CalcStateMachine(user, persist, this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
-                        "/start".equalsIgnoreCase(message.getText()) ||
-                        "/с".equalsIgnoreCase(message.getText()) ||
-                        "/s".equalsIgnoreCase(message.getText())) {
-                        stateMachine.sendEvent(Events.START);
+                        "/c".equalsIgnoreCase(message.getText()) ||
+                        "/с".equalsIgnoreCase(message.getText())) {
+                        command = new StartCommand(this);
+                        stateMachine.get().reset();
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
-                               "/help".equalsIgnoreCase(message.getText()) ||
                                "/п".equalsIgnoreCase(message.getText()) ||
                                "/h".equalsIgnoreCase(message.getText())) {
-                        stateMachine.sendEvent(Events.HELP);
-                    } else if ("/1".equalsIgnoreCase(message.getText())) {
-                        //stateMachine.get().reset();
-                        //command = new InitCommand(this);
-                        stateMachine.sendEvent(Events.URINE_CREATININE_CONCENTRATION);
-
+                        command = new HelpCommand(this);
                     } else {
-                        //command = stateMachine.get().perform(message.getText());
+                        command = stateMachine.get().perform(message.getText());
                     }
 
-                    persister.persist(stateMachine, user.getUserId());
-
                     command.execute(message);
+
+                    userService.save(user);
+                    if (stateMachine.get().getLastState() == CalcState.INIT) {
+                        stateMachine.get().reset();
+                    }
                 }
             }
         } catch (Exception c) {
-            //stateMachine.ifPresent(m -> m.reset());
+            stateMachine.ifPresent(m -> m.reset());
         }
     }
 

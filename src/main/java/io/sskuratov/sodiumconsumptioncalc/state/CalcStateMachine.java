@@ -2,18 +2,17 @@ package io.sskuratov.sodiumconsumptioncalc.state;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
 import io.sskuratov.sodiumconsumptioncalc.commands.*;
-import io.sskuratov.sodiumconsumptioncalc.constraints.CreatinineConcentration;
-import io.sskuratov.sodiumconsumptioncalc.constraints.CreatinineConcentrationUnits;
-import io.sskuratov.sodiumconsumptioncalc.constraints.PotassiumConcentration;
-import io.sskuratov.sodiumconsumptioncalc.constraints.SodiumConcentration;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
+import io.sskuratov.sodiumconsumptioncalc.exceptions.IncorrectSexException;
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
+
+import java.math.BigDecimal;
 
 public class CalcStateMachine {
 
-    private final User user;
-    private final CalcStateMachinePersist persist;
-    private final CalcBot calcBot;
+    private User user;
+    private CalcStateMachinePersist persist;
+    private CalcBot calcBot;
 
     public CalcStateMachine(User user, CalcStateMachinePersist persist, CalcBot calcBot) {
         this.persist = persist;
@@ -25,75 +24,81 @@ public class CalcStateMachine {
         persist.reset(user);
     }
 
-    public State<?> getLastState() {
+    public CalcState getLastState() {
         return persist.getLastState(user);
     }
 
     public Command perform(String text) {
-        State<?> state = persist.getLastState(user);
-        State<?> nextState;
+        CalcState state = persist.getLastState(user);
+        state = state.nextState();
 
         try {
             Command command = null;
+            BigDecimal value = new BigDecimal(text.replace(",", "."));
+            state.validate(value);
+            state.setStateValue(value);
+            persist.appendState(user, state);
 
-            switch(state.getId()) {
-                case INIT :
-                    command = new InitCommand(calcBot);
-                    nextState = new UrineCreatinineConcentration(new CreatinineConcentration());
+            switch(state) {
                 case URINE_CREATININE_CONCENTRATION :
                     command = new UrineCreatinineConcentrationCommand(calcBot);
-                    nextState = new UrineCreatinineConcentrationUnits(new CreatinineConcentrationUnits());
-                    break;
-                case URINE_CREATININE_CONCENTRATION_UNITS :
-                    command = new CreatinineConcentrationUnitsCommand(calcBot);
-                    nextState = new UrineSodiumConcentration(new SodiumConcentration());
                     break;
                 case URINE_SODIUM_CONCENTRATION :
                     command = new UrineSodiumConcentrationCommand(calcBot);
-                    nextState = new UrinePotassiumConcentration(new PotassiumConcentration());
                     break;
                 case URINE_POTASSIUM_CONCENTRATION :
                     command = new UrinePotassiumConcentrationCommand(calcBot);
-                    nextState = new Sex(new io.sskuratov.sodiumconsumptioncalc.constraints.Sex());
                     break;
                 case SEX :
                     command = new SexCommand(calcBot);
-                    nextState = new Age(new io.sskuratov.sodiumconsumptioncalc.constraints.Age());
                     break;
                 case AGE :
                     command = new AgeCommand(calcBot);
-                    nextState= new Height(new io.sskuratov.sodiumconsumptioncalc.constraints.Height());
                     break;
                 case HEIGHT :
                     command = new HeightCommand(calcBot);
-                    nextState = new Weight(new io.sskuratov.sodiumconsumptioncalc.constraints.Weight());
                     break;
                 case WEIGHT :
                     command = new WeightCommand(calcBot, persist.getStates(user));
-                    nextState = new InitState();
-                    break;
-                default :
-                    command = new InitCommand(calcBot);
-                    nextState = new InitState();
+                    persist.appendState(user, CalcState.INIT);
                     break;
             }
 
-            state.parseValue(text);
-            state.validate();
-            persist.appendState(user, nextState);
-
             return command;
-        } catch (InputException e) {
-
-            return new ErrorCommand(calcBot, e.getMessage());
-
         } catch (NumberFormatException e) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("На данный момент бот ожидает ввода значения для ");
+            builder.append("\"");
+            builder.append(state.getEntity().getCaption());
+            builder.append("\". ");
+            builder.append(System.lineSeparator());
 
-            return new ErrorCommand(calcBot, "Некорректная строка \"" + text + "\"");
+            builder.append("Допустимые значения для данного параметра находятся в интервале от ");
+            builder.append(state.getEntity().getMin());
+            builder.append(" до ");
+            builder.append(state.getEntity().getMax());
+            builder.append(System.lineSeparator());
 
-        } catch (Exception e) {
-
-            return new ErrorCommand(calcBot, e.getMessage());
+            builder.append("Возможно, Вы допустили ошибку при вводе числа: \"");
+            builder.append(text);
+            builder.append("\". Пожалуйста, используйте точку для разделения целой и дробной части, например, 0.01");
+            return new ErrorCommand(calcBot,
+                    builder.toString());
+        } catch (IncorrectSexException e) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Допустимые значения для данного параметра - 0 для Мужского пола и 1 для Женского пола.");
+            builder.append(System.lineSeparator());
+            return new ErrorCommand(calcBot,
+                    builder.toString());
+        } catch (InputException e) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Допустимые значения для данного параметра находятся в интервале от ");
+            builder.append(state.getEntity().getMin());
+            builder.append(" до ");
+            builder.append(state.getEntity().getMax());
+            builder.append(System.lineSeparator());
+            return new ErrorCommand(calcBot,
+                    builder.toString());
         }
     }
 }

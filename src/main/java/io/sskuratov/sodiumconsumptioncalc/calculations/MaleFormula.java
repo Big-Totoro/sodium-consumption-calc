@@ -1,6 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.calculations;
 
-import io.sskuratov.sodiumconsumptioncalc.statemachine.States;
+import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -9,23 +9,23 @@ import java.util.Map;
 
 public class MaleFormula implements Formula {
 
-    private final Map<States, BigDecimal> values;
+    private Map<CalcState, BigDecimal> values;
 
-    public MaleFormula(Map<States, BigDecimal> values) {
+    public MaleFormula(Map<CalcState, BigDecimal> values) {
         this.values = values;
     }
 
     @Override
     public BigDecimal evaluate() {
-        BigDecimal creatinineSpotUrineMmol = values.get(States.URINE_CREATININE_CONCENTRATION)
-                .divide(BigDecimal.valueOf(1000L), RoundingMode.HALF_DOWN);
-        BigDecimal height = values.get(States.HEIGHT)
-                .divide(BigDecimal.valueOf(100L), RoundingMode.HALF_DOWN);
-        BigDecimal age = values.get(States.AGE);
-        BigDecimal weight = values.get(States.WEIGHT);
-        BigDecimal sodiumSpotUrine = values.get(States.URINE_SODIUM_CONCENTRATION);
-        BigDecimal pottasiumSpotUrine = values.get(States.URINE_SODIUM_CONCENTRATION);
-        BigDecimal sodium_24_INTERSALT;
+        BigDecimal creatinineSpotUrineMmol = values.get(CalcState.URINE_CREATININE_CONCENTRATION)
+                .divide(BigDecimal.valueOf(1000L));
+        BigDecimal height = values.get(CalcState.HEIGHT)
+                .divide(BigDecimal.valueOf(100L));
+        BigDecimal age = values.get(CalcState.AGE);
+        BigDecimal weight = values.get(CalcState.WEIGHT);
+        BigDecimal sodiumSpotUrine = values.get(CalcState.URINE_SODIUM_CONCENTRATION);
+        BigDecimal pottasiumSpotUrine = values.get(CalcState.URINE_SODIUM_CONCENTRATION);
+        BigDecimal sodium_24_INTERSALT = BigDecimal.ZERO;
 
         /*
          1.       23 * ( (25.46 + 0.46*$sodium_spot_urine) -
@@ -44,7 +44,7 @@ public class MaleFormula implements Formula {
                 expr1.subtract(expr2).subtract(expr3).add(expr4).add(expr5)
         );
 
-        BigDecimal sodium_24_INTERSALT_g = sodium_24_INTERSALT.divide(BigDecimal.valueOf(1000L), RoundingMode.HALF_DOWN);
+        BigDecimal sodium_24_INTERSALT_g = sodium_24_INTERSALT.divide(BigDecimal.valueOf(1000L));
         BigDecimal salt_24_INTERSALT_g = BigDecimal.valueOf(2.5).multiply(sodium_24_INTERSALT_g).round(new MathContext(2));
 
         return salt_24_INTERSALT_g;
