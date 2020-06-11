@@ -16,15 +16,13 @@ public class Sex implements Constraint<String> {
     @Override
     public void validate(String value) throws InputException {
         if (!getMax().equalsIgnoreCase(value) && !getMin().equalsIgnoreCase(value)) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Допустимые значения для данного параметра \"Мужской\" или \"Женский\"");
-            builder.append(System.lineSeparator());
 
-            builder.append("Возможно, Вы допустили ошибку при вводе: \"");
-            builder.append(value);
-            builder.append("\"");
-
-            throw new InputException(builder.toString());
+            String builder = "Допустимые значения для данного параметра \"Мужской\" или \"Женский\"" +
+                    System.lineSeparator() +
+                    "Возможно, Вы допустили ошибку при вводе: \"" +
+                    value +
+                    "\"";
+            throw new InputException(builder);
         }
     }
 

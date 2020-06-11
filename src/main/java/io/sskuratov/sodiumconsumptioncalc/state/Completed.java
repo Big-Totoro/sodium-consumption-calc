@@ -4,7 +4,6 @@ import io.sskuratov.sodiumconsumptioncalc.CalcBot;
 import io.sskuratov.sodiumconsumptioncalc.calculations.FemaleFormula;
 import io.sskuratov.sodiumconsumptioncalc.calculations.Formula;
 import io.sskuratov.sodiumconsumptioncalc.calculations.MaleFormula;
-import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -39,7 +38,7 @@ public class Completed extends AbstractState<String> {
     }
 
     @Override
-    public void parseValue(String value) throws InputException {
+    public void parseValue(String value) {
 
     }
 
@@ -49,7 +48,7 @@ public class Completed extends AbstractState<String> {
     }
 
     @Override
-    public void validate() throws InputException {
+    public void validate() {
 
     }
 
@@ -76,7 +75,10 @@ public class Completed extends AbstractState<String> {
         Map<States, ?> values = states.entrySet().stream()
                 .filter(v -> v.getKey() != States.INIT)
                 .filter(v -> v.getKey() != States.COMPLETED)
-                .collect(Collectors.toMap(Map.Entry::getKey, v -> v.getValue().get().get()));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        v -> v.getValue().get().get())
+                );
         Formula formula;
 
         if (((String)values.get(States.SEX)).equalsIgnoreCase("МУЖСКОЙ")) {

@@ -16,18 +16,16 @@ public class PotassiumConcentration implements Constraint<BigDecimal> {
     @Override
     public void validate(BigDecimal value) throws InputException {
         if ((value.compareTo(getMax()) > 0) || (value.compareTo(getMin()) < 0)) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Допустимые значения для данного параметра находятся в интервале от ");
-            builder.append(getMin());
-            builder.append(" до ");
-            builder.append(getMax());
-            builder.append(System.lineSeparator());
 
-            builder.append("Возможно, Вы допустили ошибку при вводе числа: \"");
-            builder.append(value);
-            builder.append("\"");
-
-            throw new InputException(builder.toString());
+            String builder = "Допустимые значения для данного параметра находятся в интервале от " +
+                    getMin() +
+                    " до " +
+                    getMax() +
+                    System.lineSeparator() +
+                    "Возможно, Вы допустили ошибку при вводе числа: \"" +
+                    value +
+                    "\"";
+            throw new InputException(builder);
         }
     }
 

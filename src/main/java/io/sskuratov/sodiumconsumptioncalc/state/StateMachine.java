@@ -13,10 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class StateMachine {
 
-    private Logger logger = LoggerFactory.getLogger(StateMachine.class);
+    private final Logger logger = LoggerFactory.getLogger(StateMachine.class);
 
     private State<?> state = new InitState();
-    private Map<States, State<?>> states = new ConcurrentHashMap<>();
+    private final Map<States, State<?>> states = new ConcurrentHashMap<>();
 
     private final User user;
     private final StateMachinePersist persist;
@@ -52,9 +52,14 @@ public class StateMachine {
                 state.execute(bot, message);
             }
         } catch (InputException e) {
-            state.error(bot, message, "");
+            state.error(bot, message, e.getMessage());
         } catch (TelegramApiException e) {
             logger.debug(">>> handle: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            state.error(bot, message,
+                    "Вы неверно ввели значение для \"" +
+                    state.getId().getDescription() +
+                    "\"");
         }
 
         logger.debug("<<< handle: ");

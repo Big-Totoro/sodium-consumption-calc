@@ -28,19 +28,17 @@ public class CreatinineConcentrationUnits implements Constraint<String> {
         if (!("мкмоль/л".equalsIgnoreCase(value.trim())) &&
             !("ммоль/л".equalsIgnoreCase(value.trim())) &&
             !("мг/дл".equalsIgnoreCase(value.trim()))) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Допустимо только одно из следующих значениий для данного параметра: \"");
-            builder.append("мкмоль/л, ");
-            builder.append("ммоль/л, ");
-            builder.append("мг/дл");
-            builder.append("\"");
-            builder.append(System.lineSeparator());
 
-            builder.append("Возможно, Вы допустили ошибку при вводе: \"");
-            builder.append(value);
-            builder.append("\"");
-
-            throw new InputException(builder.toString());
+            String builder = "Допустимо только одно из следующих значениий для данного параметра: \"" +
+                    "мкмоль/л, " +
+                    "ммоль/л, " +
+                    "мг/дл" +
+                    "\"" +
+                    System.lineSeparator() +
+                    "Возможно, Вы допустили ошибку при вводе: \"" +
+                    value +
+                    "\"";
+            throw new InputException(builder);
         }
     }
 

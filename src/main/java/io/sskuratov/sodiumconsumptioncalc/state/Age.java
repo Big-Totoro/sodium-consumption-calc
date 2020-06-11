@@ -30,8 +30,8 @@ public class Age extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public void set(BigDecimal units) {
-        this.value = units;
+    public void set(BigDecimal value) {
+        this.value = value;
     }
 
     @Override

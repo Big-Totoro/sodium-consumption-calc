@@ -1,7 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc;
 
 import io.sskuratov.sodiumconsumptioncalc.commands.Command;
-import io.sskuratov.sodiumconsumptioncalc.commands.DefaultCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -19,11 +17,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 @Component
 public class CalcBot extends TelegramLongPollingBot {
 
-    private Logger logger = LoggerFactory.getLogger(CalcBot.class);
+    private final Logger logger = LoggerFactory.getLogger(CalcBot.class);
 
     private final UserService userService;
     private final StateMachinePersist persist = new StateMachinePersist();
@@ -53,7 +52,7 @@ public class CalcBot extends TelegramLongPollingBot {
                 Message message = update.getMessage();
                 if (message != null && message.hasText()) {
                     User user = userService.getUserOrCreateNew(message);
-                    Command command = new DefaultCommand(this);
+
                     stateMachine = persist.restore(user).orElseGet(() -> new StateMachine(user, persist, this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
@@ -61,13 +60,13 @@ public class CalcBot extends TelegramLongPollingBot {
                         "/с".equalsIgnoreCase(message.getText()) ||
                         "/s".equalsIgnoreCase(message.getText())) {
                         stateMachine.reset();
-                        command = new StartCommand(this);
+                        Command command = new StartCommand(this);
                         command.execute(message);
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
                                "/help".equalsIgnoreCase(message.getText()) ||
                                "/п".equalsIgnoreCase(message.getText()) ||
                                "/h".equalsIgnoreCase(message.getText())) {
-                        command = new HelpCommand(this);
+                        Command command = new HelpCommand(this);
                         command.execute(message);
                     } else if ("/1".equalsIgnoreCase(message.getText())) {
 
@@ -81,7 +80,7 @@ public class CalcBot extends TelegramLongPollingBot {
             }
         } catch (Exception c) {
             logger.error(c.getMessage());
-            logger.error(stateMachine.toString());
+            logger.error(Objects.requireNonNull(stateMachine).toString());
         }
     }
 
@@ -93,10 +92,5 @@ public class CalcBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return "1003185955:AAF8T3FIrcLkWS2dupQpD0dgJuAsnRjJAXI";
-    }
-
-    @ExceptionHandler(Exception.class)
-    public void handler() {
-
     }
 }

@@ -26,10 +26,6 @@ public abstract class AbstractCommand implements Command {
         calcBot.execute(sendMessage);
     }
 
-    @Override
-    public void error(Message message) throws TelegramApiException {
-    }
-
     public void error(Message message, String error) throws TelegramApiException {
         execute(message, error);
     }

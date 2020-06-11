@@ -2,7 +2,6 @@ package io.sskuratov.sodiumconsumptioncalc.state;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Optional;
 
@@ -45,7 +44,7 @@ public class Error extends AbstractState<String> {
     }
 
     @Override
-    public void execute(CalcBot bot, Message message) throws TelegramApiException {
+    public void execute(CalcBot bot, Message message) {
 
     }
 
