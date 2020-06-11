@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {

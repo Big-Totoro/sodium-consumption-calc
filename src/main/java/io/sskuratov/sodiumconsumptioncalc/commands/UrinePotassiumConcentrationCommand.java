@@ -1,29 +1,20 @@
 package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class UrinePotassiumConcentrationCommand implements Command {
-
-    private final CalcBot calcBot;
+public class UrinePotassiumConcentrationCommand extends AbstractCommand {
 
     public UrinePotassiumConcentrationCommand(CalcBot calcBot) {
-        this.calcBot = calcBot;
+        super(calcBot);
     }
 
     @Override
     public void execute(Message message) throws TelegramApiException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setText(
-                "Шаг 4 из 7: Далее, введите параметр: \"" +
-                        CalcState.SEX.getEntity().getCaption() +
+        super.execute(message,
+                "Шаг 3 из 7: Далее, введите параметр: \"" +
+                        "Концентрация калия в разовой порции мочи (ммоль/л)" +
                         "\"");
-
-        calcBot.execute(sendMessage);
     }
 }

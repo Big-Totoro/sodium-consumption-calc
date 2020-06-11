@@ -2,9 +2,9 @@ package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
 
-public class DefaultCommand extends AbstractCommand {
+public class CompletedCommand extends AbstractCommand {
 
-    public DefaultCommand(CalcBot calcBot) {
+    protected CompletedCommand(CalcBot calcBot) {
         super(calcBot);
     }
 }

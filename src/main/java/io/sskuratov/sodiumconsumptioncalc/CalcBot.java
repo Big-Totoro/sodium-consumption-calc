@@ -5,10 +5,10 @@ import io.sskuratov.sodiumconsumptioncalc.commands.DefaultCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
-import io.sskuratov.sodiumconsumptioncalc.dao.UserRepository;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachine;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcStateMachinePersist;
+import io.sskuratov.sodiumconsumptioncalc.state.StateMachine;
+import io.sskuratov.sodiumconsumptioncalc.state.StateMachinePersist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,13 +19,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
 
 @Component
 public class CalcBot extends TelegramLongPollingBot {
 
-    private UserService userService;
-    private CalcStateMachinePersist persist = new CalcStateMachinePersist();
+    private Logger logger = LoggerFactory.getLogger(CalcBot.class);
+
+    private final UserService userService;
+    private final StateMachinePersist persist = new StateMachinePersist();
 
     @Autowired
     public CalcBot(UserService userService) {
@@ -44,39 +45,43 @@ public class CalcBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<CalcStateMachine> stateMachine = null;
+        StateMachine stateMachine = null;
 
         try {
             if (update.hasMessage()) {
+
                 Message message = update.getMessage();
                 if (message != null && message.hasText()) {
                     User user = userService.getUserOrCreateNew(message);
                     Command command = new DefaultCommand(this);
-                    stateMachine = Optional.of(new CalcStateMachine(user, persist, this));
+                    stateMachine = persist.restore(user).orElseGet(() -> new StateMachine(user, persist, this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
-                        "/c".equalsIgnoreCase(message.getText()) ||
-                        "/с".equalsIgnoreCase(message.getText())) {
+                        "/start".equalsIgnoreCase(message.getText()) ||
+                        "/с".equalsIgnoreCase(message.getText()) ||
+                        "/s".equalsIgnoreCase(message.getText())) {
+                        stateMachine.reset();
                         command = new StartCommand(this);
-                        stateMachine.get().reset();
+                        command.execute(message);
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
+                               "/help".equalsIgnoreCase(message.getText()) ||
                                "/п".equalsIgnoreCase(message.getText()) ||
                                "/h".equalsIgnoreCase(message.getText())) {
                         command = new HelpCommand(this);
+                        command.execute(message);
+                    } else if ("/1".equalsIgnoreCase(message.getText())) {
+
                     } else {
-                        command = stateMachine.get().perform(message.getText());
+                        stateMachine.handle(message);
                     }
 
-                    command.execute(message);
-
+                    persist.save(user, stateMachine);
                     userService.save(user);
-                    if (stateMachine.get().getLastState() == CalcState.INIT) {
-                        stateMachine.get().reset();
-                    }
                 }
             }
         } catch (Exception c) {
-            stateMachine.ifPresent(m -> m.reset());
+            logger.error(c.getMessage());
+            logger.error(stateMachine.toString());
         }
     }
 

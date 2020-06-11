@@ -1,29 +1,20 @@
 package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.state.CalcState;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class AgeCommand implements Command {
-
-    private final CalcBot calcBot;
+public class AgeCommand extends AbstractCommand {
 
     public AgeCommand(CalcBot calcBot) {
-        this.calcBot = calcBot;
+        super(calcBot);
     }
 
     @Override
     public void execute(Message message) throws TelegramApiException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setText(
-                "Шаг 6 из 7: Далее, введите параметр: \"" +
-                        CalcState.HEIGHT.getEntity().getCaption() +
+        super.execute(message,
+                "Шаг 5 из 7: Далее, введите параметр: \"" +
+                        "Возраст (полных лет)" +
                         "\"");
-
-        calcBot.execute(sendMessage);
     }
 }
