@@ -11,6 +11,10 @@ public abstract class AbstractState<T> implements State<T> {
 
     protected final Constraint<T> constraint;
 
+    /**
+     * Constructor
+     * @param constraint The constraints applied to the state to verify the state value
+     */
     public AbstractState(Constraint<T> constraint) {
         this.constraint = constraint;
     }

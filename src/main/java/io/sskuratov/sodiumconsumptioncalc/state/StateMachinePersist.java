@@ -16,10 +16,20 @@ public class StateMachinePersist {
         store = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Restore the state machine for the user
+     * @param user The user
+     * @return state machine for the user
+     */
     public Optional<StateMachine> restore(User user) {
         return Optional.ofNullable(store.get(user.getUserId()));
     }
 
+    /**
+     * Save the state machine for the user
+     * @param user The user instance
+     * @param stateMachine The state machine instance
+     */
     public void save(User user, StateMachine stateMachine) {
         store.put(user.getUserId(), stateMachine);
     }

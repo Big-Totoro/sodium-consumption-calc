@@ -3,16 +3,8 @@ package io.sskuratov.sodiumconsumptioncalc.constraints;
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class PotassiumConcentration implements Constraint<BigDecimal> {
-
-    public PotassiumConcentration of(BigDecimal value) {
-        Objects.requireNonNull(value);
-
-        return new PotassiumConcentration();
-    }
-
     @Override
     public void validate(BigDecimal value) throws InputException {
         if ((value.compareTo(getMax()) > 0) || (value.compareTo(getMin()) < 0)) {

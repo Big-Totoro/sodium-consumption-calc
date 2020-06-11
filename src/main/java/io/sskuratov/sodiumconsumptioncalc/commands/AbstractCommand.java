@@ -9,6 +9,10 @@ public abstract class AbstractCommand implements Command {
 
     protected final CalcBot calcBot;
 
+    /**
+     * Constructor
+     * @param calcBot Telegram bot
+     */
     protected AbstractCommand(CalcBot calcBot) {
         this.calcBot = calcBot;
     }
@@ -17,6 +21,12 @@ public abstract class AbstractCommand implements Command {
     public void execute(Message message) throws TelegramApiException {
     }
 
+    /**
+     * Send the reply to Telegram user
+     * @param message The message we reply on
+     * @param text The text we send to Telegram user
+     * @throws TelegramApiException Telegram exception
+     */
     public void execute(Message message, String text) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(message.getChatId());
@@ -24,9 +34,5 @@ public abstract class AbstractCommand implements Command {
         sendMessage.setText(text);
 
         calcBot.execute(sendMessage);
-    }
-
-    public void error(Message message, String error) throws TelegramApiException {
-        execute(message, error);
     }
 }

@@ -2,17 +2,7 @@ package io.sskuratov.sodiumconsumptioncalc.constraints;
 
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
 public class CreatinineConcentrationUnits implements Constraint<String> {
-
-    public CreatinineConcentrationUnits of(BigDecimal value) {
-        Objects.requireNonNull(value);
-
-        return new CreatinineConcentrationUnits();
-    }
-
     @Override
     public String getMax() {
         return "";

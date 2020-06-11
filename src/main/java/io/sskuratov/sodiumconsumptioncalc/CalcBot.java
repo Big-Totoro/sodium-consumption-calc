@@ -53,7 +53,7 @@ public class CalcBot extends TelegramLongPollingBot {
                 if (message != null && message.hasText()) {
                     User user = userService.getUserOrCreateNew(message);
 
-                    stateMachine = persist.restore(user).orElseGet(() -> new StateMachine(user, persist, this));
+                    stateMachine = persist.restore(user).orElseGet(() -> new StateMachine(this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
                         "/start".equalsIgnoreCase(message.getText()) ||
@@ -68,8 +68,6 @@ public class CalcBot extends TelegramLongPollingBot {
                                "/h".equalsIgnoreCase(message.getText())) {
                         Command command = new HelpCommand(this);
                         command.execute(message);
-                    } else if ("/1".equalsIgnoreCase(message.getText())) {
-
                     } else {
                         stateMachine.handle(message);
                     }

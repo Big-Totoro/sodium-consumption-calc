@@ -7,24 +7,14 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Map;
 
-public class MaleFormula implements Formula {
-
-    private final Map<States, ?> values;
+public class MaleFormula extends AbstractFormula {
 
     public MaleFormula(Map<States, ?> values) {
-        this.values = values;
+        super(values);
     }
 
     @Override
     public BigDecimal evaluate() {
-        BigDecimal creatinineSpotUrineMmol = ((BigDecimal)values.get(States.URINE_CREATININE_CONCENTRATION))
-                .divide(BigDecimal.valueOf(1000L), RoundingMode.HALF_DOWN);
-        BigDecimal height = ((BigDecimal)values.get(States.HEIGHT))
-                .divide(BigDecimal.valueOf(100L), RoundingMode.HALF_DOWN);
-        BigDecimal age = (BigDecimal)values.get(States.AGE);
-        BigDecimal weight = (BigDecimal)values.get(States.WEIGHT);
-        BigDecimal sodiumSpotUrine = (BigDecimal)values.get(States.URINE_SODIUM_CONCENTRATION);
-        BigDecimal pottasiumSpotUrine = (BigDecimal)values.get(States.URINE_SODIUM_CONCENTRATION);
         BigDecimal sodium_24_INTERSALT;
 
         /*
@@ -45,8 +35,7 @@ public class MaleFormula implements Formula {
         );
 
         BigDecimal sodium_24_INTERSALT_g = sodium_24_INTERSALT.divide(BigDecimal.valueOf(1000L), RoundingMode.HALF_DOWN);
-        BigDecimal salt_24_INTERSALT_g = BigDecimal.valueOf(2.5).multiply(sodium_24_INTERSALT_g).round(new MathContext(2));
 
-        return salt_24_INTERSALT_g;
+        return BigDecimal.valueOf(2.5).multiply(sodium_24_INTERSALT_g).round(new MathContext(2));
     }
 }

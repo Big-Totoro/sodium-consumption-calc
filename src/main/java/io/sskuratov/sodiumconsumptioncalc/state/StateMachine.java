@@ -1,7 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.state;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.dao.User;
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +16,29 @@ public class StateMachine {
 
     private State<?> state = new InitState();
     private final Map<States, State<?>> states = new ConcurrentHashMap<>();
-
-    private final User user;
-    private final StateMachinePersist persist;
     private final CalcBot bot;
 
-    public StateMachine(User user, StateMachinePersist persist, CalcBot bot) {
-        this.persist = persist;
-        this.user = user;
+    /**
+     * Constructor
+     * @param bot Telegram bot
+     */
+    public StateMachine(CalcBot bot) {
         this.bot = bot;
     }
 
+    /**
+     * Save the state to the state machine
+     * @param state The state to store
+     */
     void setState(State<?> state) {
         this.state = state;
     }
 
+    /**
+     * Handle the incoming message from Telegram user
+     * @param message Telegram message
+     * @throws TelegramApiException Telegram exception
+     */
     public void handle(Message message) throws TelegramApiException {
         logger.debug(">>> handle: " + message.getText());
 
@@ -65,6 +72,9 @@ public class StateMachine {
         logger.debug("<<< handle: ");
     }
 
+    /**
+     * Reset the state machine to the initial state. Clear all previous states.
+     */
     public void reset() {
         state = new InitState();
         states.clear();

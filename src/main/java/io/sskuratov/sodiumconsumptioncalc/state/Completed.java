@@ -4,7 +4,8 @@ import io.sskuratov.sodiumconsumptioncalc.CalcBot;
 import io.sskuratov.sodiumconsumptioncalc.calculations.FemaleFormula;
 import io.sskuratov.sodiumconsumptioncalc.calculations.Formula;
 import io.sskuratov.sodiumconsumptioncalc.calculations.MaleFormula;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import io.sskuratov.sodiumconsumptioncalc.commands.AbstractCommand;
+import io.sskuratov.sodiumconsumptioncalc.commands.CompletedCommand;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -54,15 +55,8 @@ public class Completed extends AbstractState<String> {
 
     @Override
     public void execute(CalcBot bot, Message message) throws TelegramApiException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setText(
-                "Результат вычисления, потребление соли: " +
-                        calculate(states) +
-                        " грамм в сутки.");
-
-        bot.execute(sendMessage);
+        AbstractCommand command = new CompletedCommand(bot);
+        command.execute(message, calculate(states).toString());
     }
 
     public void setStates(Map<States, State<?>> states) {
