@@ -27,9 +27,8 @@ public interface State<T> {
     /**
      * Parses the value
      * @param value to parse
-     * @throws InputException Incorrect input exception
      */
-    void parseValue(String value) throws InputException;
+    void parseValue(String value);
 
     /**
      * Returns the next state related to the workflow

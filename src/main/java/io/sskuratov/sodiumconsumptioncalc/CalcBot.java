@@ -85,7 +85,9 @@ public class CalcBot extends TelegramLongPollingBot {
                 }
             }
         } catch (Exception c) {
-            stateMachine.reset();
+            if (stateMachine != null) {
+                stateMachine.reset();
+            }
             logger.error(c.getMessage());
             logger.error(Objects.requireNonNull(stateMachine).toString());
         }
