@@ -32,6 +32,7 @@ public abstract class AbstractCommand implements Command {
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
+        sendMessage.enableHtml(true);
 
         calcBot.execute(sendMessage);
     }

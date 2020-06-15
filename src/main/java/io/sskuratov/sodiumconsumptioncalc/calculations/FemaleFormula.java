@@ -15,6 +15,8 @@ public class FemaleFormula extends AbstractFormula {
 
     @Override
     public BigDecimal evaluate() {
+        super.evaluate();
+
         BigDecimal sodium_24_INTERSALT;
 
         /*

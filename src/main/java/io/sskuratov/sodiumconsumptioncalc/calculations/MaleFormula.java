@@ -15,6 +15,8 @@ public class MaleFormula extends AbstractFormula {
 
     @Override
     public BigDecimal evaluate() {
+        super.evaluate();
+
         BigDecimal sodium_24_INTERSALT;
 
         /*
@@ -22,7 +24,7 @@ public class MaleFormula extends AbstractFormula {
          2.              (2.75 * $creatinine_spot_urine_mmol) -
          3.              (0.13 * $pottasium_spot_urine) +
          4.              4.10 * $weight / pow($height_meter, 2) +
-         5.              (0.26*$age) );
+         5.              (0.26 * $age) );
          */
         BigDecimal expr1 = BigDecimal.valueOf(25.46).add(BigDecimal.valueOf(0.46).multiply(sodiumSpotUrine));
         BigDecimal expr2 = BigDecimal.valueOf(2.75).multiply(creatinineSpotUrineMmol);

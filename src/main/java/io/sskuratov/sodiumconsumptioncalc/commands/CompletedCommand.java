@@ -13,8 +13,8 @@ public class CompletedCommand extends AbstractCommand {
     @Override
     public void execute(Message message, String text) throws TelegramApiException {
         super.execute(message,
-                "Результат вычисления, потребление соли: " +
+                "Результат вычисления, потребление соли: <b>" +
                         text +
-                        " грамм в сутки.");
+                        "</b> грамм в сутки.");
     }
 }

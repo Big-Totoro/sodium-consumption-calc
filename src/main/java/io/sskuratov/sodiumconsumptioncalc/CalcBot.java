@@ -1,5 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc;
 
+import io.sskuratov.sodiumconsumptioncalc.commands.AnalyzeCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.Command;
 import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
@@ -62,11 +63,18 @@ public class CalcBot extends TelegramLongPollingBot {
                         stateMachine.reset();
                         Command command = new StartCommand(this);
                         command.execute(message);
+                        command = new HelpCommand(this);
+                        command.execute(message);
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
                                "/help".equalsIgnoreCase(message.getText()) ||
                                "/п".equalsIgnoreCase(message.getText()) ||
                                "/h".equalsIgnoreCase(message.getText())) {
                         Command command = new HelpCommand(this);
+                        command.execute(message);
+                    } else if ("/a".equalsIgnoreCase(message.getText()) ||
+                               "/а".equalsIgnoreCase(message.getText()) ||
+                               "/анализ".equalsIgnoreCase(message.getText())) {
+                        Command command = new AnalyzeCommand(this);
                         command.execute(message);
                     } else {
                         stateMachine.handle(message);
@@ -77,6 +85,7 @@ public class CalcBot extends TelegramLongPollingBot {
                 }
             }
         } catch (Exception c) {
+            stateMachine.reset();
             logger.error(c.getMessage());
             logger.error(Objects.requireNonNull(stateMachine).toString());
         }

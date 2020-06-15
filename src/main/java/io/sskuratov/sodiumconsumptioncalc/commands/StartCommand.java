@@ -12,6 +12,30 @@ public class StartCommand extends AbstractCommand {
 
     @Override
     public void execute(Message message) throws TelegramApiException {
-        super.execute(message, "Реакция на команду Старт");
+        super.execute(message,
+                "Telegram-бот \"Калькулятор потребления соли\" " +
+                        "поможет Вам вычислить суточное потребление поваренной соли. " +
+                        System.lineSeparator() +
+                        "Калькулятор поможет понять - нужно ли Вам ограничить потребление соли и даст рекомендации." +
+                        System.lineSeparator() +
+                        System.lineSeparator() +
+                        "Чтобы вычислить суточное потребление соли необходимы следующие параметры, " +
+                        "которые можно получить сдав анализ: " +
+                        "1. Концентрация креатинина в разовой порции мочи (мкмоль/л, ммоль/л или мн/дл)" +
+                        System.lineSeparator() +
+                        "2. Концентрация натрия в разовой порции мочи (ммоль/л)" +
+                        System.lineSeparator() +
+                        "3. Концентрация калия в разовой порции мочи (ммоль/л)" +
+                        System.lineSeparator() +
+                        "4. Пол (М/Ж)" +
+                        System.lineSeparator() +
+                        "5. Возраст (полных лет)" +
+                        System.lineSeparator() +
+                        "6. Рост (см)" +
+                        System.lineSeparator() +
+                        "7. Вес (кг)" +
+                        System.lineSeparator() +
+                        ""
+                );
     }
 }

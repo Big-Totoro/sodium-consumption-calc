@@ -54,10 +54,8 @@ public class StateMachine {
                 ((Completed)state).setStates(states);
                 state.execute(bot, message);
                 reset();
-                state.execute(bot, message);
-            } else {
-                state.execute(bot, message);
             }
+            state.execute(bot, message);
         } catch (InputException e) {
             state.error(bot, message, e.getMessage());
         } catch (TelegramApiException e) {
