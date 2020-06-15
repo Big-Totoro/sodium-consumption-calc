@@ -35,7 +35,10 @@ public class StartCommand extends AbstractCommand {
                         System.lineSeparator() +
                         "7. Вес (кг)" +
                         System.lineSeparator() +
-                        ""
+                        System.lineSeparator() +
+                        "Для начала работы отправьте боту какое-нибудь сообщение. " +
+                        "Это может быть произвольный текст, хештэг или имя пациента, которое поможет вам в дальнейшем найти " +
+                        "эти расчёты через поиск Telegram."
                 );
     }
 }
