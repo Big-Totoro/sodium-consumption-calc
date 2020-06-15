@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public class UrineSodiumConcentration extends AbstractState<BigDecimal> {
 
@@ -26,8 +25,8 @@ public class UrineSodiumConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public Optional<BigDecimal> get() {
-        return Optional.ofNullable(value);
+    public BigDecimal get() {
+        return value;
     }
 
     @Override

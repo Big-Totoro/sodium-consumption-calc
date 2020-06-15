@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Completed extends AbstractState<String> {
@@ -29,8 +28,8 @@ public class Completed extends AbstractState<String> {
     }
 
     @Override
-    public Optional<String> get() {
-        return Optional.empty();
+    public String get() {
+        return "";
     }
 
     @Override
@@ -71,7 +70,7 @@ public class Completed extends AbstractState<String> {
                 .filter(v -> v.getKey() != States.COMPLETED)
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        v -> v.getValue().get().get())
+                        v -> v.getValue().get())
                 );
         Formula formula;
 

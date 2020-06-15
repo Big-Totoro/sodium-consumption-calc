@@ -5,8 +5,6 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Optional;
-
 public interface State<T> {
     /**
      * Returns the state based on enum
@@ -18,7 +16,7 @@ public interface State<T> {
      * Returns the value related to the state
      * @return the value
      */
-    Optional<T> get();
+    T get();
 
     /**
      * Sets the value for the state

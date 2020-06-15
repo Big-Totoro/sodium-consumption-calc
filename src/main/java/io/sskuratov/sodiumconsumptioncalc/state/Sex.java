@@ -8,8 +8,6 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Optional;
-
 public class Sex extends AbstractState<String> {
 
     private String sex;
@@ -24,8 +22,8 @@ public class Sex extends AbstractState<String> {
     }
 
     @Override
-    public Optional<String> get() {
-        return Optional.ofNullable(sex);
+    public String get() {
+        return sex;
     }
 
     @Override

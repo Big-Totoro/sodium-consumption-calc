@@ -7,8 +7,6 @@ import io.sskuratov.sodiumconsumptioncalc.constraints.CreatinineConcentration;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Optional;
-
 public class InitState extends AbstractState<String> {
 
     public InitState() {
@@ -21,8 +19,8 @@ public class InitState extends AbstractState<String> {
     }
 
     @Override
-    public Optional<String> get() {
-        return Optional.empty();
+    public String get() {
+        return "";
     }
 
     @Override

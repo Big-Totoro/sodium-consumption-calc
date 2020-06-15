@@ -9,8 +9,6 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Optional;
-
 public class UrineCreatinineConcentrationUnits extends AbstractState<String> {
 
     private String units;
@@ -25,8 +23,8 @@ public class UrineCreatinineConcentrationUnits extends AbstractState<String> {
     }
 
     @Override
-    public Optional<String> get() {
-        return Optional.ofNullable(units);
+    public String get() {
+        return units;
     }
 
     @Override

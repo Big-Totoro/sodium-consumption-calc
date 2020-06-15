@@ -10,8 +10,7 @@ public enum States {
     AGE("Возраст"),
     HEIGHT("Рост"),
     WEIGHT("Вес"),
-    COMPLETED("Завершено"),
-    ERROR("Ошибка");
+    COMPLETED("Завершено");
 
     private final String description;
 
