@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  soc:
+    build:
+      context: ./
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    networks:
+      - net
+  mongo:
+    image: mongo
+    container_name: mongo
+    hostname: mongodb
+    ports:
+    - '27017-27019:27017-27019'
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: 'sodium-consumption-calc'
+      MONGO_INITDB_ROOT_USERNAME: 'admin'
+      MONGO_INITDB_ROOT_PASSWORD: 'admin'
+    networks:
+      - net
+    volumes:
+      - ./data:/data/db/
+      - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    command: ["-f", "/etc/mongod.conf"]
+networks:
+  net:
+    driver: bridge

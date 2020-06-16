@@ -1,0 +1,5 @@
+FROM mongo:latest
+
+WORKDIR /home/x1ngp0ng/Projects/sodium-consumption-calc
+COPY mongodb/mongo-init.js /docker-entrypoint-initdb.d/mongo-init.js:ro
+EXPOSE 27017 27017
