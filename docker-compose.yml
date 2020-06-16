@@ -3,6 +3,7 @@ services:
   soc:
     build:
       context: ./
+      dockerfile: Dockerfile.app
     depends_on:
       - mongo
     restart: unless-stopped
