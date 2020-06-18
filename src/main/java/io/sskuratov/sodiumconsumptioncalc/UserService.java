@@ -19,7 +19,6 @@ public class UserService {
     public User getUserOrCreateNew(Message message) {
         return userRepository.findUserByUserId(message.getFrom().getId())
                 .orElseGet(() -> new User(
-                                "",
                                 message.getFrom().getId(),
                                 message.getFrom().getUserName(),
                                 message.getFrom().getFirstName(),

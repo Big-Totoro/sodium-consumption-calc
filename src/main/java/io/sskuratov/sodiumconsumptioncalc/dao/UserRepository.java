@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
-    @Query("{ 'userId' : {$regex: ?0, $options: 'i'} }")
+public interface UserRepository extends MongoRepository<User, Integer> {
+    @Query("{ '_id' : ?0 }")
     Optional<User> findUserByUserId(Integer userId);
 }
