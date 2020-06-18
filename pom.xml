@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.sskuratov</groupId>
     <artifactId>sodium-consumption-calc</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>sodium-consumption-calc</name>
     <description>Calculates sodium consumption</description>
 

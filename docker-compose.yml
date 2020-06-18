@@ -8,13 +8,11 @@ services:
     depends_on:
       - mongo
     restart: unless-stopped
-    networks:
-      net:
-        ipv4_address: 172.16.0.12
+    links:
+      - mongo
   mongo:
     image: mongo
     container_name: mongo
-    hostname: mongodb
     ports:
     - '27017-27019:27017-27019'
     restart: always
@@ -22,18 +20,8 @@ services:
       MONGO_INITDB_DATABASE: 'admin'
       MONGO_INITDB_ROOT_USERNAME: 'admin'
       MONGO_INITDB_ROOT_PASSWORD: 'admin'
-    networks:
-      net:
-        ipv4_address: 172.16.0.13
     volumes:
-      - ./data:/data/db/
+      - /data:/data/db/
       - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    command:
-      - '--auth'
-networks:
-  net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.0.0/24
+#    command:
+#      - '--auth'

@@ -34,7 +34,7 @@ public class CalcBot extends TelegramLongPollingBot {
     }
 
     @PostConstruct
-    public void registerBot(){
+    public void registerBot() {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
             telegramBotsApi.registerBot(this);
@@ -57,23 +57,23 @@ public class CalcBot extends TelegramLongPollingBot {
                     stateMachine = persist.restore(user).orElseGet(() -> new StateMachine(this));
 
                     if ("/старт".equalsIgnoreCase(message.getText()) ||
-                        "/start".equalsIgnoreCase(message.getText()) ||
-                        "/с".equalsIgnoreCase(message.getText()) ||
-                        "/s".equalsIgnoreCase(message.getText())) {
+                            "/start".equalsIgnoreCase(message.getText()) ||
+                            "/с".equalsIgnoreCase(message.getText()) ||
+                            "/s".equalsIgnoreCase(message.getText())) {
                         stateMachine.reset();
                         Command command = new StartCommand(this);
                         command.execute(message);
                         command = new HelpCommand(this);
                         command.execute(message);
                     } else if ("/помоги".equalsIgnoreCase(message.getText()) ||
-                               "/help".equalsIgnoreCase(message.getText()) ||
-                               "/п".equalsIgnoreCase(message.getText()) ||
-                               "/h".equalsIgnoreCase(message.getText())) {
+                            "/help".equalsIgnoreCase(message.getText()) ||
+                            "/п".equalsIgnoreCase(message.getText()) ||
+                            "/h".equalsIgnoreCase(message.getText())) {
                         Command command = new HelpCommand(this);
                         command.execute(message);
                     } else if ("/a".equalsIgnoreCase(message.getText()) ||
-                               "/а".equalsIgnoreCase(message.getText()) ||
-                               "/анализ".equalsIgnoreCase(message.getText())) {
+                            "/а".equalsIgnoreCase(message.getText()) ||
+                            "/анализ".equalsIgnoreCase(message.getText())) {
                         Command command = new AnalyzeCommand(this);
                         command.execute(message);
                     } else {
@@ -87,9 +87,9 @@ public class CalcBot extends TelegramLongPollingBot {
         } catch (Exception c) {
             if (stateMachine != null) {
                 stateMachine.reset();
+                logger.error(Objects.requireNonNull(stateMachine).toString());
             }
             logger.error(c.getMessage());
-            logger.error(Objects.requireNonNull(stateMachine).toString());
         }
     }
 
