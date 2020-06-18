@@ -23,7 +23,8 @@ public class UserService {
                                 message.getFrom().getId(),
                                 message.getFrom().getUserName(),
                                 message.getFrom().getFirstName(),
-                                message.getFrom().getLastName()
+                                message.getFrom().getLastName(),
+                                -1
                         )
                 );
     }

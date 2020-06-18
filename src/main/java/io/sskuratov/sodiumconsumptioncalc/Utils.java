@@ -1,10 +1,12 @@
 package io.sskuratov.sodiumconsumptioncalc;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -25,21 +27,17 @@ public class Utils {
 
     public String getStringFromResource(String fileName) {
         Objects.requireNonNull(fileName);
+        String lines = "";
+        ClassPathResource resource = new ClassPathResource(fileName);
+        try (InputStream inputStream = resource.getInputStream();
+             BufferedReader bufferedInputStream = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-        StringBuilder builder = new StringBuilder();
+            lines = bufferedInputStream.lines().collect(Collectors.joining());
 
-        try (FileReader reader = new FileReader(getFileFromResources(fileName));
-             BufferedReader br = new BufferedReader(reader)) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
-            }
-        }
-        catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return builder.toString();
+        return lines;
     }
 }
