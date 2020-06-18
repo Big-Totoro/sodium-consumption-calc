@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   soc:
+    container_name: soc
     build:
       context: ./
       dockerfile: Dockerfile.app
@@ -8,7 +9,8 @@ services:
       - mongo
     restart: unless-stopped
     networks:
-      - net
+      net:
+        ipv4_address: 172.16.0.12
   mongo:
     image: mongo
     container_name: mongo
@@ -17,15 +19,21 @@ services:
     - '27017-27019:27017-27019'
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: 'sodium-consumption-calc'
+      MONGO_INITDB_DATABASE: 'admin'
       MONGO_INITDB_ROOT_USERNAME: 'admin'
       MONGO_INITDB_ROOT_PASSWORD: 'admin'
     networks:
-      - net
+      net:
+        ipv4_address: 172.16.0.13
     volumes:
       - ./data:/data/db/
       - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    command: ["-f", "/etc/mongod.conf"]
+    command:
+      - '--auth'
 networks:
   net:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
