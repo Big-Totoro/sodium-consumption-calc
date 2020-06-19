@@ -50,7 +50,6 @@ public class CalcBot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage()) {
                 Message message = update.getMessage();
-//                logger.error(">>> Id: " + update.getUpdateId() + ", Id: " + message.getMessageId() + ", text: " + message.getText());
                 if (message != null && message.hasText()) {
                     User user;
                     synchronized (userService) {
@@ -59,17 +58,23 @@ public class CalcBot extends TelegramLongPollingBot {
                     /**
                      * Returns if we get the same update again
                      */
-                    logger.debug(">>> Id: " +
+                    logger.info(">>> Thread: " +
+                            Thread.currentThread().getId() +
+                            ", Id: " +
                             update.getUpdateId() +
-                            ", updateId: " +
+                            ", UpdateId: " +
                             user.getUpdateId() +
                             ", Id: " +
                             message.getMessageId() +
                             ", text: " +
                             message.getText());
                     if (update.getUpdateId().compareTo(user.getUpdateId()) == 0) {
-                        logger.debug("<<< Id: " +
+                        logger.info(">>> Thread: " +
+                                Thread.currentThread().getId() +
+                                ", Id: " +
                                 update.getUpdateId() +
+                                ", UpdateId: " +
+                                user.getUpdateId() +
                                 ", Id: " +
                                 message.getMessageId() +
                                 ", text: " +
