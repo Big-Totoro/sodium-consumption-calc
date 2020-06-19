@@ -1,13 +1,11 @@
 package io.sskuratov.sodiumconsumptioncalc.state;
 
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
 public class StateMachinePersist {
 
     private final Map<Integer, StateMachine> store;

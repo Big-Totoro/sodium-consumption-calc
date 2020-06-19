@@ -2,8 +2,8 @@
 // db = db.getSiblingDB($MONGO_INITDB_DATABASE)
 db.createUser(
     {
-        user: "sskuratov",
-        pwd: "Powell2100!",
+        user: "user2412",
+        pwd: "abcde4321",
         roles: [
             {
                 role: "readWrite",

@@ -5,42 +5,25 @@ import io.sskuratov.sodiumconsumptioncalc.commands.Command;
 import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
+import io.sskuratov.sodiumconsumptioncalc.dao.UserMongoDao;
 import io.sskuratov.sodiumconsumptioncalc.state.StateMachine;
 import io.sskuratov.sodiumconsumptioncalc.state.StateMachinePersist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 
-@Component
 public class CalcBot extends TelegramLongPollingBot {
 
     private final Logger logger = LoggerFactory.getLogger(CalcBot.class);
 
-    private final UserService userService;
+    private final UserService userService = new UserService(new UserMongoDao());
     private final StateMachinePersist persist = new StateMachinePersist();
 
-    @Autowired
-    public CalcBot(UserService userService) {
-        this.userService = userService;
-    }
-
-    @PostConstruct
-    public void registerBot() {
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        try {
-            telegramBotsApi.registerBot(this);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+    public CalcBot() {
     }
 
     @Override
@@ -123,6 +106,7 @@ public class CalcBot extends TelegramLongPollingBot {
                 logger.error(Objects.requireNonNull(stateMachine).toString());
             }
             logger.error(c.getMessage());
+            c.printStackTrace();
         }
     }
 

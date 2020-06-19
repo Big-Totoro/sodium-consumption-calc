@@ -1,13 +1,9 @@
 package io.sskuratov.sodiumconsumptioncalc;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@SpringBootApplication(/*exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class}*/)
 public class SodiumConsumptionCalcApplication {
 
     static {
@@ -15,6 +11,11 @@ public class SodiumConsumptionCalcApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(SodiumConsumptionCalcApplication.class, args);
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        try {
+            telegramBotsApi.registerBot(new CalcBot());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
