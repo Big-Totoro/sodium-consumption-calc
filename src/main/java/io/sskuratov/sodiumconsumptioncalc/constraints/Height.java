@@ -21,13 +21,11 @@ public class Height implements Constraint<BigDecimal> {
         }
     }
 
-    @Override
-    public BigDecimal getMax() {
+    private BigDecimal getMax() {
         return BigDecimal.valueOf(300L);
     }
 
-    @Override
-    public BigDecimal getMin() {
+    private BigDecimal getMin() {
         return BigDecimal.valueOf(30L);
     }
 

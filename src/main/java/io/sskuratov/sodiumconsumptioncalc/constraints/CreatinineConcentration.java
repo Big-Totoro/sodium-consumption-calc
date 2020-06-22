@@ -21,13 +21,11 @@ public class CreatinineConcentration implements Constraint<BigDecimal> {
         }
     }
 
-    @Override
-    public BigDecimal getMax() {
+    private BigDecimal getMax() {
         return BigDecimal.valueOf(100000L);
     }
 
-    @Override
-    public BigDecimal getMin() {
+    private BigDecimal getMin() {
         return BigDecimal.ZERO;
     }
 

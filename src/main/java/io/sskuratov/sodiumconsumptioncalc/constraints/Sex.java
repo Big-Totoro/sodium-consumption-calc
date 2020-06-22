@@ -16,13 +16,11 @@ public class Sex implements Constraint<String> {
         }
     }
 
-    @Override
-    public String getMax() {
+    private String getMax() {
         return "Мужской";
     }
 
-    @Override
-    public String getMin() {
+    private String getMin() {
         return "Женский";
     }
 

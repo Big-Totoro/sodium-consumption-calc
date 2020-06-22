@@ -3,13 +3,11 @@ package io.sskuratov.sodiumconsumptioncalc.constraints;
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 
 public class CreatinineConcentrationUnits implements Constraint<String> {
-    @Override
-    public String getMax() {
+    private String getMax() {
         return "";
     }
 
-    @Override
-    public String getMin() {
+    private String getMin() {
         return "";
     }
 

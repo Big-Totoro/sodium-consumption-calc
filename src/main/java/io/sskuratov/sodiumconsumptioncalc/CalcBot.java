@@ -38,9 +38,6 @@ public class CalcBot extends TelegramLongPollingBot {
                     synchronized (userService) {
                         user = userService.getUserOrCreateNew(message);
                     }
-                    /**
-                     * Returns if we get the same update again
-                     */
                     logger.info(">>> Thread: " +
                             Thread.currentThread().getId() +
                             ", Id: " +

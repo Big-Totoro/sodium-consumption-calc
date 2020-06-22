@@ -14,8 +14,7 @@ public class MongoDbHolder {
     public static MongoDatabase getInstance() {
         if (instance == null) {
             MongoClient mongoClient = new MongoClient(new MongoClientURI(Config.MONGO_DB_URL));
-            String dbName = Config.MONGO_DB_URL.substring(Config.MONGO_DB_URL.lastIndexOf("/") + 1);
-            instance = mongoClient.getDatabase("sodium-consumption-calc");
+            instance = mongoClient.getDatabase(Config.DATABASE_NAME);
         }
         return instance;
     }

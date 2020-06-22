@@ -11,13 +11,11 @@ public class Config {
 
     public static String MONGO_DB_URL;
     public static String DATABASE_NAME;
-    public static Properties STRINGS; // access properties by STRINGS.getProperty("PROPERTY")
 
     private final static Logger logger = LoggerFactory.getLogger(Config.class);
 
     static {
         Properties propConfig = new Properties();
-        STRINGS = new Properties();
         InputStream input = null;
 
         try {
@@ -45,9 +43,5 @@ public class Config {
                 }
             }
         }
-    }
-
-    public static String getString(String propertyName) {
-        return STRINGS.getProperty(propertyName, "<error>");
     }
 }
