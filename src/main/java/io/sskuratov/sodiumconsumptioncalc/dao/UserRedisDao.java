@@ -57,7 +57,7 @@ public class UserRedisDao implements UserDao {
         user.setUsername(jedis.hget(userId.toString(), USERNAME));
         user.setFirstName(jedis.hget(userId.toString(), FIRST_NAME));
         user.setLastName(jedis.hget(userId.toString(), LAST_NAME));
-        user.setUserId(Integer.valueOf(jedis.hget(userId.toString(), UPDATE_ID)));
+        user.setUpdateId(Integer.valueOf(jedis.hget(userId.toString(), UPDATE_ID)));
 
         return user;
     }

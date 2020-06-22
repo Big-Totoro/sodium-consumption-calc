@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import redis.clients.jedis.JedisPool;
 
 import java.util.Objects;
 
@@ -20,7 +21,11 @@ public class CalcBot extends TelegramLongPollingBot {
 
     private final Logger logger = LoggerFactory.getLogger(CalcBot.class);
 
-    private final UserService userService = new UserService(new UserRedisDao());
+    private final UserService userService = new UserService(
+            new UserRedisDao(
+                    new JedisPool(Config.REDIS_DB_URL)
+            )
+    );
     private final StateMachinePersist persist = new StateMachinePersist();
 
     public CalcBot() {

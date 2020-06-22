@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class Config {
 
-    public static String MONGO_DB_URL;
+    public static String REDIS_DB_URL;
     public static String DATABASE_NAME;
 
     private final static Logger logger = LoggerFactory.getLogger(Config.class);
@@ -29,7 +29,7 @@ public class Config {
 
                 logger.info("Got config: " + propConfig.stringPropertyNames());
 
-                MONGO_DB_URL = propConfig.getProperty("MONGO_DB_URL");
+                REDIS_DB_URL = propConfig.getProperty("REDIS_DB_URL");
                 DATABASE_NAME = propConfig.getProperty("DATABASE_NAME");
             }
         } catch (IOException e) {
