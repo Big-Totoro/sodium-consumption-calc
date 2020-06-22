@@ -28,11 +28,6 @@ public class UrineCreatinineConcentrationUnits extends AbstractState<String> {
     }
 
     @Override
-    public void set(String units) {
-        this.units = units;
-    }
-
-    @Override
     public void parseValue(String value) {
         this.units = value;
     }

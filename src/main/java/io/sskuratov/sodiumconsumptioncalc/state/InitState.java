@@ -24,11 +24,6 @@ public class InitState extends AbstractState<String> {
     }
 
     @Override
-    public void set(String value) {
-
-    }
-
-    @Override
     public void parseValue(String value) {
 
     }

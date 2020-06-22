@@ -27,11 +27,6 @@ public class Sex extends AbstractState<String> {
     }
 
     @Override
-    public void set(String units) {
-        this.sex = units;
-    }
-
-    @Override
     public void parseValue(String value) {
         this.sex = value;
     }

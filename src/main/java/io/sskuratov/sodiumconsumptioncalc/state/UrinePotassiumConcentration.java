@@ -29,11 +29,6 @@ public class UrinePotassiumConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public void set(BigDecimal units) {
-        this.value = units;
-    }
-
-    @Override
     public void next(StateMachine stateMachine) {
         stateMachine.setState(new Sex(new io.sskuratov.sodiumconsumptioncalc.constraints.Sex()));
     }

@@ -19,12 +19,6 @@ public interface State<T> {
     T get();
 
     /**
-     * Sets the value for the state
-     * @param value The value to store
-     */
-    void set(T value);
-
-    /**
      * Parses the value
      * @param value to parse
      */

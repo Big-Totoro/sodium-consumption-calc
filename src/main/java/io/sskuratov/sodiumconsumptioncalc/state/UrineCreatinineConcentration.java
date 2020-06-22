@@ -30,11 +30,6 @@ public class UrineCreatinineConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public void set(BigDecimal value) {
-        this.value = value;
-    }
-
-    @Override
     public void parseValue(String value) {
         this.value = new BigDecimal(value.trim().replace(",", "."));
     }

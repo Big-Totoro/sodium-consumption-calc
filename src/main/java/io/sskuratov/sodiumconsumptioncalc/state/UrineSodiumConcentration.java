@@ -30,11 +30,6 @@ public class UrineSodiumConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public void set(BigDecimal units) {
-        this.value = units;
-    }
-
-    @Override
     public void parseValue(String value) {
         this.value = new BigDecimal(value.trim().replace(",", "."));
     }
