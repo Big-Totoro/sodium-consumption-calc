@@ -5,7 +5,7 @@ import io.sskuratov.sodiumconsumptioncalc.commands.Command;
 import io.sskuratov.sodiumconsumptioncalc.commands.HelpCommand;
 import io.sskuratov.sodiumconsumptioncalc.commands.StartCommand;
 import io.sskuratov.sodiumconsumptioncalc.dao.User;
-import io.sskuratov.sodiumconsumptioncalc.dao.UserMongoDao;
+import io.sskuratov.sodiumconsumptioncalc.dao.UserRedisDao;
 import io.sskuratov.sodiumconsumptioncalc.state.StateMachine;
 import io.sskuratov.sodiumconsumptioncalc.state.StateMachinePersist;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class CalcBot extends TelegramLongPollingBot {
 
     private final Logger logger = LoggerFactory.getLogger(CalcBot.class);
 
-    private final UserService userService = new UserService(new UserMongoDao());
+    private final UserService userService = new UserService(new UserRedisDao());
     private final StateMachinePersist persist = new StateMachinePersist();
 
     public CalcBot() {

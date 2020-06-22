@@ -6,20 +6,24 @@ services:
       context: ./
       dockerfile: Dockerfile.app
     depends_on:
-      - mongo
+      - redis
     restart: unless-stopped
-    links:
-      - mongo
-  mongo:
-    image: mongo
-    container_name: mongo
+    networks:
+      - redis-net
+  redis:
+    image: bitnami/redis
+    container_name: redis
     ports:
-    - '27017-27019:27017-27019'
+    - 6379:6379
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: 'admin'
-      MONGO_INITDB_ROOT_USERNAME: 'admin'
-      MONGO_INITDB_ROOT_PASSWORD: 'admin'
+    - REDIS_REPLICATION_MODE=master
+    command: redis-server --requirepass user2412
     volumes:
-      - ~/Projects/data:/data/db/
-      - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - redis-data:/data
+    networks:
+      - redis-net
+volumes:
+  redis-data:
+networks:
+  redis-net:
