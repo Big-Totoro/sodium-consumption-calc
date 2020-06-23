@@ -14,7 +14,7 @@ public class UrineCreatinineConcentrationCommand extends AbstractCommand {
     public void execute(Message message) throws TelegramApiException {
         super.execute(message,
                 "Шаг 1 из 7: Введите параметр: \"" +
-                        "Концентрация креатинина в разовой порции мочи" +
-                        "\"");
+                        "Концентрация креатинина в разовой порции мочи\". Далее, на шаге №2, будет возможность " +
+                        "выбрать единицы измерения для введённого Вами значения - мкмоль/л или ммоль/л или мг/дл.");
     }
 }

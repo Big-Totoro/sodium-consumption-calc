@@ -2,10 +2,10 @@ version: '3.8'
 services:
   soc:
     container_name: soc
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile.app
-    image: sskuratov/soc
+    build:
+      context: ./
+      dockerfile: Dockerfile.app
+#    image: sskuratov/soc
     depends_on:
       - redis
     restart: unless-stopped
