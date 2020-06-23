@@ -62,7 +62,7 @@ public class UserRedisDao implements UserDao {
         Map<String, String> map = new HashMap<>();
 
         map.put(USER_ID, user.getUserId().toString());
-        map.put(USERNAME, user.getUsername());
+        map.put(USERNAME, Optional.ofNullable(user.getUsername()).orElse(""));
         map.put(UPDATE_ID, user.getUpdateId().toString());
 
         return map;
