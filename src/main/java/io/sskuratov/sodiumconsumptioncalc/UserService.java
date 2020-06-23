@@ -17,8 +17,6 @@ public class UserService {
                 .orElseGet(() -> new User(
                                 message.getFrom().getId(),
                                 message.getFrom().getUserName(),
-                                message.getFrom().getFirstName(),
-                                message.getFrom().getLastName(),
                                 -1
                         )
                 );

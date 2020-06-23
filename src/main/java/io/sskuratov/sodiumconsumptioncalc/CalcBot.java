@@ -64,8 +64,7 @@ public class CalcBot extends TelegramLongPollingBot {
                                 message.getMessageId() +
                                 ", text: " +
                                 message.getText());
-                        userService.save(new User(user.getUserId(), user.getUsername(), user.getFirstName(),
-                                user.getLastName(), update.getUpdateId()));
+                        userService.save(new User(user.getUserId(), user.getUsername(), update.getUpdateId()));
                         return;
                     }
 
@@ -97,8 +96,7 @@ public class CalcBot extends TelegramLongPollingBot {
 
                     persist.save(user, stateMachine);
                     synchronized (userService) {
-                        userService.save(new User(user.getUserId(), user.getUsername(), user.getFirstName(),
-                                user.getLastName(), update.getUpdateId()));
+                        userService.save(new User(user.getUserId(), user.getUsername(), update.getUpdateId()));
                     }
                 }
             }

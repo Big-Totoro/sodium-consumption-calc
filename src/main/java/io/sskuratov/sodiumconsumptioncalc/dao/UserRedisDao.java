@@ -18,8 +18,6 @@ public class UserRedisDao implements UserDao {
 
     private final String USER_ID = "user_id";
     private final String USERNAME = "username";
-    private final String FIRST_NAME = "first_name";
-    private final String LAST_NAME = "last_name";
     private final String UPDATE_ID = "update_id";
 
     public UserRedisDao(JedisPool pool) {
@@ -55,8 +53,6 @@ public class UserRedisDao implements UserDao {
 
         user.setUserId(userId);
         user.setUsername(jedis.hget(userId.toString(), USERNAME));
-        user.setFirstName(jedis.hget(userId.toString(), FIRST_NAME));
-        user.setLastName(jedis.hget(userId.toString(), LAST_NAME));
         user.setUpdateId(Integer.valueOf(jedis.hget(userId.toString(), UPDATE_ID)));
 
         return user;
@@ -67,8 +63,6 @@ public class UserRedisDao implements UserDao {
 
         map.put(USER_ID, user.getUserId().toString());
         map.put(USERNAME, user.getUsername());
-        map.put(FIRST_NAME, user.getFirstName());
-        map.put(LAST_NAME, user.getLastName());
         map.put(UPDATE_ID, user.getUpdateId().toString());
 
         return map;
