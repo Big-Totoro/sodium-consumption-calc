@@ -1,7 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.Utils;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -17,7 +16,8 @@ public class CompletedCommand extends AbstractCommand {
                 text +
                 "</b> грамм в сутки." +
                 System.lineSeparator() +
-                Utils.get().getStringFromResource("Results.txt");
+                "Суточное потребление поваренной соли превышает допустимый безопасный уровень 3,8 грамм.\n" +
+                "<a href=\"https://youtu.be/JRqkYuOXc7Y\"> Посмотрите видео о том как можно улучшить своё здоровье!</a>";
         super.execute(message, builder);
     }
 }

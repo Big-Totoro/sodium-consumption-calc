@@ -7,7 +7,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class SodiumConsumptionCalcApplication {
 
     static {
-        ApiContextInitializer.init();
+        try {
+            ApiContextInitializer.init();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void main(String[] args) {

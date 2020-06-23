@@ -1,7 +1,6 @@
 package io.sskuratov.sodiumconsumptioncalc.commands;
 
 import io.sskuratov.sodiumconsumptioncalc.CalcBot;
-import io.sskuratov.sodiumconsumptioncalc.Utils;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -17,6 +16,12 @@ public class AnalyzeCommand extends AbstractCommand {
 
     @Override
     public void execute(Message message) throws TelegramApiException {
-        super.execute(message, Utils.get().getStringFromResource("Analyze.txt"));
+        String text =
+                "Сдают разовую утреннюю мочу с определением в ней содержания натрия, " +
+                "креатинина, калия и последующим расчётом\n" +
+                "по результатам исследования суточного потребления поваренной соли. " +
+                "Эти вопросы подробно рассмотрены в следующем\n" +
+                "<a href=\"https://youtu.be/vvfmmjtQrVI\"> видео</a>";
+        super.execute(message, text);
     }
 }
