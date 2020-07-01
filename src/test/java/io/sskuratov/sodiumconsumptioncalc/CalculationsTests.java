@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class CalculationsTests {
 
     private Map<States, BigDecimal> toValues(
-            BigDecimal creatinineСoncentration,
+            BigDecimal creatinineConcentration,
             BigDecimal sodiumConcentration,
             BigDecimal potassiumConcentration,
             BigDecimal age,
@@ -24,7 +24,7 @@ public class CalculationsTests {
             BigDecimal weight
             ) {
         Map<States, BigDecimal> values = new HashMap<>();
-        values.put(States.URINE_CREATININE_CONCENTRATION, creatinineСoncentration);
+        values.put(States.URINE_CREATININE_CONCENTRATION, creatinineConcentration);
         values.put(States.URINE_SODIUM_CONCENTRATION, sodiumConcentration);
         values.put(States.URINE_POTASSIUM_CONCENTRATION, potassiumConcentration);
         values.put(States.AGE, age);
@@ -61,7 +61,7 @@ public class CalculationsTests {
                         BigDecimal.valueOf(0L)
                 )
         );
-        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> formula.evaluate());
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
     }
 
     @Test
@@ -91,6 +91,6 @@ public class CalculationsTests {
                         BigDecimal.valueOf(0L)
                 )
         );
-        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> formula.evaluate());
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
     }
 }
