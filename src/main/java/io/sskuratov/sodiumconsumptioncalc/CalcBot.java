@@ -39,10 +39,7 @@ public class CalcBot extends TelegramLongPollingBot {
             if (update.hasMessage()) {
                 Message message = update.getMessage();
                 if (message != null && message.hasText()) {
-                    User user;
-                    synchronized (userService) {
-                        user = userService.getUserOrCreateNew(message);
-                    }
+                    User user = userService.getUserOrCreateNew(message);
                     logger.info(">>> Thread: " +
                             Thread.currentThread().getId() +
                             ", Id: " +
@@ -54,16 +51,6 @@ public class CalcBot extends TelegramLongPollingBot {
                             ", text: " +
                             message.getText());
                     if (update.getUpdateId().compareTo(user.getUpdateId()) == 0) {
-                        logger.info(">>> Thread: " +
-                                Thread.currentThread().getId() +
-                                ", Id: " +
-                                update.getUpdateId() +
-                                ", UpdateId: " +
-                                user.getUpdateId() +
-                                ", Id: " +
-                                message.getMessageId() +
-                                ", text: " +
-                                message.getText());
                         userService.save(new User(user.getUserId(), user.getUsername(), update.getUpdateId()));
                         return;
                     }
@@ -95,9 +82,7 @@ public class CalcBot extends TelegramLongPollingBot {
                     }
 
                     persist.save(user, stateMachine);
-                    synchronized (userService) {
-                        userService.save(new User(user.getUserId(), user.getUsername(), update.getUpdateId()));
-                    }
+                    userService.save(new User(user.getUserId(), user.getUsername(), update.getUpdateId()));
                 }
             }
         } catch (Exception c) {

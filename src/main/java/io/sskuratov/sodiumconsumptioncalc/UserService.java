@@ -13,7 +13,8 @@ public class UserService {
     }
 
     public User getUserOrCreateNew(Message message) {
-        return userDao.findUserByUserId(message.getFrom().getId())
+        return userDao
+                .findUserByUserId(message.getFrom().getId())
                 .orElseGet(() -> new User(
                                 message.getFrom().getId(),
                                 message.getFrom().getUserName(),
