@@ -3,6 +3,7 @@ package io.sskuratov.sodiumconsumptioncalc.calculations;
 import io.sskuratov.sodiumconsumptioncalc.state.States;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class AbstractFormula implements Formula {
 
@@ -20,9 +21,11 @@ public class AbstractFormula implements Formula {
 
     @Override
     public Double evaluate() {
-        if (((String)values.get(States.URINE_CREATININE_CONCENTRATION_UNITS)).equalsIgnoreCase("мкмоль/л")) {
+        String units = Optional.ofNullable((String)values.get(States.URINE_CREATININE_CONCENTRATION_UNITS))
+                .orElse("мкмоль/л");
+        if (units.equalsIgnoreCase("мкмоль/л")) {
             creatinineSpotUrineMmol = ((Double)values.get(States.URINE_CREATININE_CONCENTRATION)) / 1000.0;
-        } else if (((String)values.get(States.URINE_CREATININE_CONCENTRATION_UNITS)).equalsIgnoreCase("мг/дл")) {
+        } else if (units.equalsIgnoreCase("мг/дл")) {
             creatinineSpotUrineMmol = ((Double)values.get(States.URINE_CREATININE_CONCENTRATION)) / 0.011 / 1000.0;
         } else {
             creatinineSpotUrineMmol = (Double)values.get(States.URINE_CREATININE_CONCENTRATION);

@@ -7,11 +7,11 @@ import io.sskuratov.sodiumconsumptioncalc.state.States;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class CalculationsTests {
 
@@ -46,7 +46,11 @@ public class CalculationsTests {
                         105.0
                 )
         );
-        assertThat(formula.evaluate()).isEqualTo(BigDecimal.valueOf(7.2));
+        assertThat(
+                BigDecimal.valueOf(formula.evaluate()).round(new MathContext(3))
+        ).isEqualTo(
+                new BigDecimal("6.60")
+        );
     }
 
     @Test
@@ -61,7 +65,7 @@ public class CalculationsTests {
                         0.0
                 )
         );
-        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
+        assertThat(formula.evaluate().isNaN()).isTrue();
     }
 
     @Test
@@ -76,7 +80,11 @@ public class CalculationsTests {
                         105.0
                 )
         );
-        assertThat(formula.evaluate()).isEqualTo(BigDecimal.valueOf(9.4));
+        assertThat(
+                BigDecimal.valueOf(formula.evaluate()).round(new MathContext(4))
+        ).isEqualTo(
+                BigDecimal.valueOf(13.18)
+        );
     }
 
     @Test
@@ -91,6 +99,6 @@ public class CalculationsTests {
                         0.0
                 )
         );
-        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
+        assertThat(formula.evaluate().isNaN()).isTrue();
     }
 }
