@@ -8,13 +8,11 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.math.BigDecimal;
+public class UrinePotassiumConcentration extends AbstractState<Double> {
 
-public class UrinePotassiumConcentration extends AbstractState<BigDecimal> {
+    private Double value;
 
-    private BigDecimal value;
-
-    public UrinePotassiumConcentration(Constraint<BigDecimal> constraint) {
+    public UrinePotassiumConcentration(Constraint<Double> constraint) {
         super(constraint);
     }
 
@@ -24,7 +22,7 @@ public class UrinePotassiumConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public BigDecimal get() {
+    public Double get() {
         return value;
     }
 
@@ -35,7 +33,7 @@ public class UrinePotassiumConcentration extends AbstractState<BigDecimal> {
 
     @Override
     public void parseValue(String value) {
-        this.value = new BigDecimal(value.trim().replace(",", "."));
+        this.value = Double.valueOf(value.trim().replace(",", "."));
     }
 
     @Override

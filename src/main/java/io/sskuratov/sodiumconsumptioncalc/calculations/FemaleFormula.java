@@ -2,9 +2,6 @@ package io.sskuratov.sodiumconsumptioncalc.calculations;
 
 import io.sskuratov.sodiumconsumptioncalc.state.States;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Map;
 
 public class FemaleFormula extends AbstractFormula {
@@ -14,10 +11,10 @@ public class FemaleFormula extends AbstractFormula {
     }
 
     @Override
-    public BigDecimal evaluate() {
+    public Double evaluate() {
         super.evaluate();
 
-        BigDecimal sodium_24_INTERSALT;
+        Double sodium_24_INTERSALT;
 
         /*
          1.       23 * ( (5.07 + 0.34 * $sodium_spot_urine) -
@@ -27,18 +24,16 @@ public class FemaleFormula extends AbstractFormula {
          5.                (2.35 * $age) -
          6.                0.03 * pow($age, 2) )
          */
-        BigDecimal expr1 = BigDecimal.valueOf(5.07).add(BigDecimal.valueOf(0.34).multiply(sodiumSpotUrine));
-        BigDecimal expr2 = BigDecimal.valueOf(2.16).multiply(creatinineSpotUrineMmol);
-        BigDecimal expr3 = BigDecimal.valueOf(0.09).multiply(pottasiumSpotUrine);
-        BigDecimal expr4 = BigDecimal.valueOf(2.39).multiply(weight).divide(height.pow(2), RoundingMode.HALF_DOWN);
-        BigDecimal expr5 = BigDecimal.valueOf(2.35).multiply(age);
-        BigDecimal expr6 = BigDecimal.valueOf(0.03).multiply(age.pow(2));
-        sodium_24_INTERSALT = BigDecimal.valueOf(23L).multiply(
-                expr1.subtract(expr2).subtract(expr3).add(expr4).add(expr5).subtract(expr6)
-        );
+        Double expr1 = 5.07 + 0.34 * sodiumSpotUrine;
+        Double expr2 = 2.16 * creatinineSpotUrineMmol;
+        Double expr3 = 0.09 * pottasiumSpotUrine;
+        Double expr4 = 2.39 * weight / Math.pow(height, 2.0);
+        Double expr5 = 2.35 * age;
+        Double expr6 = 0.03 * Math.pow(age, 2.0);
+        sodium_24_INTERSALT = 23.0 * (expr1 - expr2 - expr3 + expr4 + expr5 - expr6);
 
-        BigDecimal sodium_24_INTERSALT_g = sodium_24_INTERSALT.divide(BigDecimal.valueOf(1000L), RoundingMode.HALF_DOWN);
+        Double sodium_24_INTERSALT_g = sodium_24_INTERSALT / 1000.0;
 
-        return BigDecimal.valueOf(2.5).multiply(sodium_24_INTERSALT_g).round(new MathContext(2));
+        return 2.5 * sodium_24_INTERSALT_g;
     }
 }

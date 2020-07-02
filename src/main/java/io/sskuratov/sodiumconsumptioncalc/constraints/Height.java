@@ -2,11 +2,9 @@ package io.sskuratov.sodiumconsumptioncalc.constraints;
 
 import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 
-import java.math.BigDecimal;
-
-public class Height implements Constraint<BigDecimal> {
+public class Height implements Constraint<Double> {
     @Override
-    public void validate(BigDecimal value) throws InputException {
+    public void validate(Double value) throws InputException {
         if ((value.compareTo(getMax()) > 0) || (value.compareTo(getMin()) < 0)) {
 
             String builder = "Допустимые значения для данного параметра находятся в интервале от " +
@@ -21,12 +19,12 @@ public class Height implements Constraint<BigDecimal> {
         }
     }
 
-    private BigDecimal getMax() {
-        return BigDecimal.valueOf(300L);
+    private Double getMax() {
+        return 300.0;
     }
 
-    private BigDecimal getMin() {
-        return BigDecimal.valueOf(30L);
+    private Double getMin() {
+        return 30.0;
     }
 
     @Override

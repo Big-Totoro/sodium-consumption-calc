@@ -8,13 +8,11 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.math.BigDecimal;
+public class Age extends AbstractState<Double> {
 
-public class Age extends AbstractState<BigDecimal> {
+    private Double value;
 
-    private BigDecimal value;
-
-    public Age(Constraint<BigDecimal> constraint) {
+    public Age(Constraint<Double> constraint) {
         super(constraint);
     }
 
@@ -24,13 +22,13 @@ public class Age extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public BigDecimal get() {
+    public Double get() {
         return value;
     }
 
     @Override
     public void parseValue(String value) {
-        this.value = new BigDecimal(value.trim().replace(",", "."));
+        this.value = Double.valueOf(value.trim().replace(",", "."));
     }
 
     @Override

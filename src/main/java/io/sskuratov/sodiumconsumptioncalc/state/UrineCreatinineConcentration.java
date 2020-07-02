@@ -9,13 +9,11 @@ import io.sskuratov.sodiumconsumptioncalc.exceptions.InputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.math.BigDecimal;
+public class UrineCreatinineConcentration extends AbstractState<Double> {
 
-public class UrineCreatinineConcentration extends AbstractState<BigDecimal> {
+    private Double value;
 
-    private BigDecimal value;
-
-    public UrineCreatinineConcentration(Constraint<BigDecimal> constraint) {
+    public UrineCreatinineConcentration(Constraint<Double> constraint) {
         super(constraint);
     }
 
@@ -25,13 +23,13 @@ public class UrineCreatinineConcentration extends AbstractState<BigDecimal> {
     }
 
     @Override
-    public BigDecimal get() {
+    public Double get() {
         return value;
     }
 
     @Override
     public void parseValue(String value) {
-        this.value = new BigDecimal(value.trim().replace(",", "."));
+        this.value = Double.valueOf(value.trim().replace(",", "."));
     }
 
     @Override

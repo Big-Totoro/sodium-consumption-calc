@@ -15,15 +15,15 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class CalculationsTests {
 
-    private Map<States, BigDecimal> toValues(
-            BigDecimal creatinineConcentration,
-            BigDecimal sodiumConcentration,
-            BigDecimal potassiumConcentration,
-            BigDecimal age,
-            BigDecimal height,
-            BigDecimal weight
+    private Map<States, Double> toValues(
+            Double creatinineConcentration,
+            Double sodiumConcentration,
+            Double potassiumConcentration,
+            Double age,
+            Double height,
+            Double weight
             ) {
-        Map<States, BigDecimal> values = new HashMap<>();
+        Map<States, Double> values = new HashMap<>();
         values.put(States.URINE_CREATININE_CONCENTRATION, creatinineConcentration);
         values.put(States.URINE_SODIUM_CONCENTRATION, sodiumConcentration);
         values.put(States.URINE_POTASSIUM_CONCENTRATION, potassiumConcentration);
@@ -38,12 +38,12 @@ public class CalculationsTests {
     public void femaleRegularCalculation() {
         Formula formula = new FemaleFormula(
                 toValues(
-                        BigDecimal.valueOf(0.003),
-                        BigDecimal.valueOf(0.03),
-                        BigDecimal.valueOf(0.03),
-                        BigDecimal.valueOf(38.0),
-                        BigDecimal.valueOf(168.0),
-                        BigDecimal.valueOf(90.0)
+                        3456.0,
+                        130.0,
+                        25.0,
+                        80.0,
+                        178.0,
+                        105.0
                 )
         );
         assertThat(formula.evaluate()).isEqualTo(BigDecimal.valueOf(7.2));
@@ -53,12 +53,12 @@ public class CalculationsTests {
     public void femaleZeroCalculation() {
         Formula formula = new FemaleFormula(
                 toValues(
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L)
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
                 )
         );
         assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
@@ -68,12 +68,12 @@ public class CalculationsTests {
     public void maleRegularCalculation() {
         Formula formula = new MaleFormula(
                 toValues(
-                        BigDecimal.valueOf(0.003),
-                        BigDecimal.valueOf(0.03),
-                        BigDecimal.valueOf(0.03),
-                        BigDecimal.valueOf(38.0),
-                        BigDecimal.valueOf(168.0),
-                        BigDecimal.valueOf(90.0)
+                        3456.0,
+                        130.0,
+                        25.0,
+                        80.0,
+                        178.0,
+                        105.0
                 )
         );
         assertThat(formula.evaluate()).isEqualTo(BigDecimal.valueOf(9.4));
@@ -83,12 +83,12 @@ public class CalculationsTests {
     public void maleZeroCalculation() {
         Formula formula = new MaleFormula(
                 toValues(
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L),
-                        BigDecimal.valueOf(0L)
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
                 )
         );
         assertThatExceptionOfType(ArithmeticException.class).isThrownBy(formula::evaluate);
