@@ -5,7 +5,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.app
-#    image: sskuratov/soc
     depends_on:
       - redis
     restart: unless-stopped

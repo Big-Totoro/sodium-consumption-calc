@@ -97,11 +97,11 @@ public class CalcBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "salt_consumption_calc_bot";
+        return "MY BOT NAME HERE!";
     }
 
     @Override
     public String getBotToken() {
-        return "1003185955:AAF8T3FIrcLkWS2dupQpD0dgJuAsnRjJAXI";
+        return "MY BOT TOCKEN HERE!";
     }
 }
